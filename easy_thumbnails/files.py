@@ -387,6 +387,8 @@ class Thumbnailer(File):
             raise exceptions.InvalidImageFormatError(
                 "The source file does not appear to be an image")
 
+        icc_profile = image.info.get("icc_profile")
+
         thumbnail_image = engine.process_image(image, thumbnail_options,
                                                self.thumbnail_processors)
         if high_resolution:
@@ -401,7 +403,7 @@ class Thumbnailer(File):
 
         img = engine.save_image(
             thumbnail_image, filename=filename, quality=quality,
-            subsampling=subsampling)
+            subsampling=subsampling, icc_profile=icc_profile)
         data = img.read()
 
         thumbnail = ThumbnailFile(
